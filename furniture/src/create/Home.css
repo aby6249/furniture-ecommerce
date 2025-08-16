@@ -1,0 +1,271 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+body {
+  overflow-x: hidden;
+}
+
+.banner {
+  width: 100vw;
+  height: 80vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+
+/* <<<<shop style>>>> */
+
+.shop-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+}
+
+/* Title styling */
+.shop-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+
+
+/* Button styling */
+.shop-button {
+  background-color: #eeece9;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  color: black;
+  transition: background-color 0.3s ease;
+}
+
+.shop-button:hover {
+  background-color: #9d6a37;
+}
+
+
+
+/* <<<<Category styling!>>>>> */
+.categories-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.categories-heading {
+  font-size: 2.5rem;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 2.5rem;
+  color: #9d6a37;
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .categories-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.category-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: box-shadow 0.3s ease;
+  text-decoration: none;
+}
+
+.category-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.category-img {
+  width: 100%;
+  height: 15rem;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  display: block;
+}
+
+.category-card:hover .category-img {
+  transform: scale(1.05);
+}
+
+.category-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.category-card:hover .category-overlay {
+  opacity: 1;
+}
+
+/* <<<<furniture ads>>>> */
+.nearest-store-section {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.nearest-store-heading {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #9d6a37;
+}
+.deal-image-row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.deal-image {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.deal-image:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+/* <<<<<New Arrival>>>>> */
+.top-sale {
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.top-sale-heading {
+  font-size: 24px;
+  color: #9d6a37;
+  margin-bottom: 30px;
+}
+
+.top-image-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+}
+
+.top-image-wrapper {
+  max-width: 220px;
+  text-align: left;
+}
+
+.top-image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+.top-image:hover {
+  transform: scale(1.05);
+}
+
+.top-caption {
+  margin-top: 10px;
+  font-weight: 600;
+  color: #5b5b5b;
+  font-size: 16px;
+  text-align: left;
+}
+
+
+
+
+
+
+.luxury-section {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.luxury-heading {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #9d6a37; /* Same as nearest-store-heading */
+}
+
+.luxury-image-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 80rem;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.luxury-image-wrapper:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.luxury-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.luxury-hover-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0,0,0,0.5);
+  color: #fff;
+  padding: 12px 24px;
+  font-size: 1.25rem;
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+/* 
+.luxury-image-wrapper:hover .luxury-hover-text {
+  opacity: 1;
+} */
