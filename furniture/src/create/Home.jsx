@@ -10,7 +10,7 @@ const Home = () => {
       {/* <<<<< Banner Section >>>>> */}
       <div className="banner">
         <img
-          src="https://cdn-bnokp.nitrocdn.com/QNoeDwCprhACHQcnEmHgXDhDpbEOlRHH/assets/images/optimized/rev-0318a68/www.decorilla.com/online-decorating/wp-content/uploads/2025/02/Contemporary-trendy-living-room-interior-design-styles-by-Decorilla-designer-Leanna-S-2048x1359.jpeg"
+          src="https://cdn.decorilla.com/imgp/jpg/ac553f93-1ec5-40d0-9142-fc39457481b2/Decorilla-Online-Interior-Design-Help.jpg?width=2000"
           alt="Banner"
           className="banner-image"
         />

@@ -22,9 +22,7 @@ body {
   display: block;
 }
 
-
 /* <<<<shop style>>>> */
-
 .shop-overlay {
   position: absolute;
   inset: 0;
@@ -44,8 +42,6 @@ body {
   margin-bottom: 1rem;
 }
 
-
-
 /* Button styling */
 .shop-button {
   background-color: #eeece9;
@@ -61,8 +57,6 @@ body {
 .shop-button:hover {
   background-color: #9d6a37;
 }
-
-
 
 /* <<<<Category styling!>>>>> */
 .categories-section {
@@ -151,6 +145,7 @@ body {
   margin-bottom: 2rem;
   color: #9d6a37;
 }
+
 .deal-image-row {
   display: flex;
   justify-content: center;
@@ -164,11 +159,11 @@ body {
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
 .deal-image:hover {
   transform: scale(1.03);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
-
 
 /* <<<<<New Arrival>>>>> */
 .top-sale {
@@ -213,11 +208,7 @@ body {
   text-align: left;
 }
 
-
-
-
-
-
+/* <<<<<Luxury Section>>>>> */
 .luxury-section {
   text-align: center;
   padding: 3rem 0;
@@ -226,7 +217,7 @@ body {
 .luxury-heading {
   font-size: 2rem;
   margin-bottom: 2rem;
-  color: #9d6a37; /* Same as nearest-store-heading */
+  color: #9d6a37;
 }
 
 .luxury-image-wrapper {
@@ -265,7 +256,45 @@ body {
   opacity: 0;
   transition: opacity 0.3s ease;
 }
-/* 
-.luxury-image-wrapper:hover .luxury-hover-text {
-  opacity: 1;
-} */
+
+/* <<<<<<<<<<<<<Responsive with media query>>>>>>>>>>>>>>>>>> */
+
+/* <<<<<<<<<<<for moblie phones>>>>>>>>> */
+@media (max-width: 639px) {
+  .shop-title { font-size: 1.8rem; }
+  .shop-button { padding: 0.5rem 1rem; font-size: 1rem; }
+  .categories-heading { font-size: 1.8rem; }
+  .category-img { height: 12rem; }
+  .nearest-store-heading,
+  .luxury-heading { font-size: 1.5rem; }
+  .top-sale-heading { font-size: 1.5rem; }
+  .top-image-wrapper { max-width: 100%; flex: 1 1 100%; }
+  .deal-image { max-width: 100%; }
+  .luxury-image-wrapper { max-width: 100%; }
+  .luxury-hover-text { font-size: 1rem; padding: 8px 16px; }
+}
+
+/* <<<<<<<<<<for tablets>>>>>>>>> */
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .shop-title { font-size: 2rem; }
+  .shop-button { padding: 0.6rem 1.2rem; font-size: 1.05rem; }
+  .categories-heading { font-size: 2rem; }
+  .category-img { height: 14rem; }
+  .top-sale-heading { font-size: 1.8rem; }
+  .top-image-wrapper { max-width: 45%; }
+  .deal-image { max-width: 90%; }
+  .luxury-hover-text { font-size: 1.1rem; padding: 10px 20px; }
+}
+
+/* <<<<<<<<<<for destop>>>>>>>>>>*/
+
+@media (min-width: 1024px) {
+  .top-image-wrapper { max-width: 220px; }
+  .deal-image { max-width: 600px; }
+  .luxury-image-wrapper { max-width: 80rem; }
+  .shop-title { font-size: 2.5rem; }
+  .categories-heading { font-size: 2.5rem; }
+}
+
+

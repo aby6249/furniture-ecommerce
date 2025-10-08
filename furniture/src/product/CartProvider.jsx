@@ -55,53 +55,64 @@ export const CartProvider = ({ children }) => {
   
 
   useEffect(() => {
-    const mergeGuestCart = async () => {
-      if (!user || merged) return;
+  const mergeGuestCart = async () => {
+    if (!user || merged) return;
 
-      const guestCart = JSON.parse(localStorage.getItem("guestCart")) || [];
-      if (guestCart.length === 0) {
-        setMerged(true);
-        return;
-      }
+    const guestCart = JSON.parse(localStorage.getItem("guestCart")) || [];
+    if (guestCart.length === 0) {
+      setMerged(true);
+      return;
+    }
 
-      setLoading(true);
-      try {
-        const { data: dbCart } = await axios.get(`http://localhost:3000/cart?userId=${user.id}`);
+    setLoading(true);
+    try {
+    
+      const { data: dbCart } = await axios.get(
+        `http://localhost:3000/cart?userId=${user.id}`
+      );
 
-        for (const item of guestCart) {
-          const existingItem = dbCart.find((c) => c.productId === item.id);
+      for (const item of guestCart) {
+        const existingItem = dbCart.find(
+          (c) => String(c.productId) === String(item.id)  
+        );
 
-          if (existingItem) {
-            await axios.patch(`http://localhost:3000/cart/${existingItem.id}`, {
-              quantity: existingItem.quantity + item.quantity,
-            });
-          } else {
-            await axios.post("http://localhost:3000/cart", {
-              userId: user.id,
-              productId: item.id,
-              productName: item.name,
-              productPrice: item.new_price,
-              image: item.image,
-              quantity: item.quantity,
-            });
-          }
+        if (existingItem) {
+          await axios.patch(`http://localhost:3000/cart/${existingItem.id}`, {
+            quantity: existingItem.quantity + item.quantity,
+          });
+        } else {
+          await axios.post("http://localhost:3000/cart", {
+            userId: user.id,
+            productId: item.id,
+            productName: item.name,
+            productPrice: item.new_price,
+            image: item.image,
+            quantity: item.quantity,
+          });
         }
-
-        localStorage.removeItem("guestCart");
-
-        const updatedCart = await axios.get(`http://localhost:3000/cart?userId=${user.id}`);
-        setCart(updatedCart.data);
-        toast.success("Your guest cart has been merged successfully!");
-      } catch (error) {
-        console.error("Error merging guest cart:", error);
-      } finally {
-        setMerged(true);
-        setLoading(false);
       }
-    };
 
-    mergeGuestCart();
-  }, [user, merged]);
+    
+      localStorage.removeItem("guestCart");
+
+    
+      const updatedCart = await axios.get(
+        `http://localhost:3000/cart?userId=${user.id}`
+      );
+      setCart(updatedCart.data);
+
+      toast.success("Your guest cart has been merged successfully!");
+    } catch (error) {
+      console.error("Error merging guest cart:", error);
+    } finally {
+      setMerged(true);
+      setLoading(false);
+    }
+  };
+
+  mergeGuestCart();
+}, [user, merged]);
+
 
 
 

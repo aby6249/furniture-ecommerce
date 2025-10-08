@@ -16,6 +16,7 @@
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   width: 360px;
   max-width: 100%;
+  box-sizing: border-box;
 }
 
 .title {
@@ -69,7 +70,7 @@
 }
 
 .login-button:hover {
-  background-color:  #9c5915;
+  background-color: #9c5915;
 }
 
 .register-text {
@@ -77,8 +78,9 @@
   margin: 6px 0 4px;
   font-size: 14px;
   color: #111827;
+}
 
-}.signup-button {
+.signup-button {
   display: block;
   width: 100%; 
   padding: 12px;
@@ -95,5 +97,58 @@
 }
 
 .signup-button:hover {
-  background-color:  #9c5915; 
+  background-color: #9c5915; 
+}
+
+/* <<<<<<<<<<<<<<<<Responsive>>>>>>>>> */
+@media (max-width: 768px) {
+  .login-container {
+    width: 90%;
+    padding: 30px;
+  }
+
+  .title {
+    font-size: 1.6rem;
+  }
+
+  .input-field {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+
+  .login-button,
+  .signup-button {
+    font-size: 15px;
+    padding: 10px;
+  }
+
+  .register-text {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .title {
+    font-size: 1.4rem;
+  }
+
+  .input-field {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .login-button,
+  .signup-button {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .register-text {
+    font-size: 12px;
+  }
 }

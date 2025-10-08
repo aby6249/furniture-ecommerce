@@ -13,9 +13,8 @@ const ProductList = () => {
   const location = useLocation();
   const categories = ["All", "Living Room", "Bedroom", "Dining Room", "Lamps & Lighting"];
 
-
-
-
+  
+  
   useEffect(() => {
     axios
       .get("http://localhost:3000/products")
@@ -26,7 +25,7 @@ const ProductList = () => {
       .catch((err) => console.error("Fetch error:", err));
   }, []);
 
-
+  
 
   useEffect(() => {
     if (location.state?.category) {
@@ -34,32 +33,40 @@ const ProductList = () => {
     }
   }, [location.state]);
 
-
-
+  
 
   useEffect(() => {
     const handleSearchUpdate = (e) => {
       setSearchQuery(e.detail);
     };
 
+    const handleSearchCleared = () => {
+      setSearchQuery(""); 
+    };
+
     window.addEventListener("searchUpdated", handleSearchUpdate);
+    window.addEventListener("searchCleared", handleSearchCleared);
+
+    
+
+
 
     const params = new URLSearchParams(location.search);
     const searchParam = params.get("search");
-    if (searchParam) {
-      setSearchQuery(searchParam);
-    }
+    if (searchParam) setSearchQuery(searchParam);
 
     return () => {
       window.removeEventListener("searchUpdated", handleSearchUpdate);
+      window.removeEventListener("searchCleared", handleSearchCleared);
     };
   }, [location.search]);
 
-  
 
 
   useEffect(() => {
     let result = [...products];
+
+   
 
     if (category !== "All") {
       result = result.filter(
@@ -67,11 +74,14 @@ const ProductList = () => {
       );
     }
 
+    
     if (searchQuery.trim() !== "") {
       result = result.filter((p) =>
         p.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
+
+    // <<<<<<<<price>>>>>>>
 
     if (sortOption === "low-high") {
       result.sort((a, b) => a.new_price - b.new_price);
@@ -86,9 +96,6 @@ const ProductList = () => {
     <div className="product-container">
       <h2 className="section-title">Our Products</h2>
 
-  
-
-
       <div className="category-sort-row">
         <div className="category-buttons">
           {categories.map((cat) => (
@@ -101,10 +108,6 @@ const ProductList = () => {
             </button>
           ))}
         </div>
-
-      
-
-
 
         <div className="sort-wrapper">
           <select
@@ -119,16 +122,24 @@ const ProductList = () => {
         </div>
       </div>
 
-      
-
-
       <div className="product-grid">
         {filteredProducts.length === 0 ? (
           <p>No products found.</p>
         ) : (
           filteredProducts.map((product) => (
             <div key={product.id} className="product-card">
-              <img src={product.image} alt={product.name} className="product-img" />
+
+          {/* <<<<<<<<<<<extra image for unavailable products>>>>>>>>>>> */}
+              <img
+                src={product.image}
+                alt={product.name}
+                className="product-img"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "https://via.placeholder.com/300x200?text=Image+Unavailable";
+                }}
+              />
+
               <h3 className="product-name">{product.name}</h3>
               <p className="product-desc">{product.description}</p>
 

@@ -1,29 +1,30 @@
-.register-page{
-   background-color: #f4f3f3;  
+.register-page {
+  background-color: #f4f3f3;
   min-height: 100vh;
-      
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .register {
   background-color: white;
   padding: 40px;
-  max-width: 450px;  
-  width: 100%;       
+  max-width: 450px;
+  width: 100%;
   margin: 50px auto;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-sizing: border-box;
 }
 
-.register-title{
-    font-size: 24px;
+.register-title {
+  font-size: 24px;
   text-align: center;
   font-weight: bold;
-  
+  margin-bottom: 20px;
 }
-
 
 .text-one {
   width: 100%;
@@ -32,6 +33,7 @@
   border-radius: 6px;
   border: 1px solid #9c5915;
   font-size: 16px;
+  box-sizing: border-box;
 }
 
 .button-register {
@@ -44,17 +46,18 @@
   border-radius: 6px;
   cursor: pointer;
   transition: 0.3s;
+  margin-top: 10px;
 }
 
 .button-register:hover {
   background-color: #9c5915;
 }
 
-
 .otp-container {
   display: flex;
   justify-content: space-between;
   margin: 15px 0;
+  gap: 5px;
 }
 
 .otp-box {
@@ -75,8 +78,6 @@
   box-shadow: 0 0 5px rgb(245, 242, 242);
 }
 
-
-
 .heading {
   display: block;
   color: #374151;
@@ -84,6 +85,63 @@
   font-size: 15px;
   font-weight: 500;
 }
-.error-text{
+
+.error-text {
   color: red;
+  margin-bottom: 10px;
+}
+
+/* <<<<<<<<<<<<<<<<<Responsive>>>>>>>>>>>>> */
+@media (max-width: 768px) {
+  .register {
+    padding: 30px;
+    max-width: 90%;
+  }
+
+  .register-title {
+    font-size: 22px;
+  }
+
+  .text-one {
+    padding: 8px;
+    font-size: 15px;
+  }
+
+  .button-register {
+    font-size: 15px;
+    padding: 10px;
+  }
+
+  .otp-box {
+    width: 40px;
+    height: 45px;
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .register {
+    padding: 20px;
+    margin: 20px auto;
+  }
+
+  .register-title {
+    font-size: 20px;
+  }
+
+  .text-one {
+    padding: 6px;
+    font-size: 14px;
+  }
+
+  .button-register {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .otp-box {
+    width: 35px;
+    height: 40px;
+    font-size: 16px;
+  }
 }

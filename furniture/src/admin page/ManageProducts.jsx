@@ -32,7 +32,7 @@ const ManageProducts = () => {
     status: "active",
   });
 
-  
+
   const [showAddProductForm, setShowAddProductForm] = useState(false);
 
   const fetchProducts = async () => {
@@ -95,7 +95,7 @@ const ManageProducts = () => {
         status: "active",
       });
       fetchProducts();
-      setShowAddProductForm(false);  
+      setShowAddProductForm(false);
     } catch (error) {
       toast.error(`Error: ${error.message}`);
     }
@@ -257,7 +257,7 @@ const ManageProducts = () => {
         + Add New Product
       </div>
 
-      
+
       <div className="controls">
         <div>
           <label>Filter by status:</label>

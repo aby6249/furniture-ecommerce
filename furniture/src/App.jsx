@@ -14,7 +14,7 @@ import ProductList from './product/ProductList';
 import ProductDetail from './product/ProductDetail';
 import AddToCart from './product/AddToCart';
 import PaymentPage from './payment/PaymentPage';
-import Orders from './payment/order';
+import Orders from './payment/Order';
 
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
