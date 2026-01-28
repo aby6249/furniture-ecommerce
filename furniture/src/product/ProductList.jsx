@@ -15,15 +15,18 @@ const ProductList = () => {
 
   
   
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/products")
-      .then((res) => {
-        setProducts(res.data);
-        setFilteredProducts(res.data);
-      })
-      .catch((err) => console.error("Fetch error:", err));
-  }, []);
+ useEffect(() => {
+  axios
+    .get("http://127.0.0.1:8000/api/products/")
+    .then((res) => {
+      setProducts(res.data);
+      setFilteredProducts(res.data);
+    })
+    .catch((err) => {
+      console.error("Fetch error:", err);
+    });
+}, []);
+
 
   
 

@@ -1,33 +1,34 @@
-import './App.css';
-import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import "./App.css";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 
-import Home from './create/Home';
-import Footer from './home page/Footer';
-import Navbar from './home page/Navbar';
+import Home from "./create/Home";
+import Footer from "./home page/Footer";
+import Navbar from "./home page/Navbar";
 
-import Login from './login/Login';
-import Register from './login/Register';
+import Login from "./login/Login";
+import Register from "./login/Register";
 
-import Useprotecter from './page/Useprotecter';
-import UserPage from './page/UserPage';
-import ProductList from './product/ProductList';
-import ProductDetail from './product/ProductDetail';
-import AddToCart from './product/AddToCart';
-import PaymentPage from './payment/PaymentPage';
-import Orders from './payment/Order';
+import Useprotecter from "./page/Useprotecter";
+import UserPage from "./page/UserPage";
+import ProductList from "./product/ProductList";
+import ProductDetail from "./product/ProductDetail";
+import AddToCart from "./product/AddToCart";
+import PaymentPage from "./payment/PaymentPage";
+import Orders from "./payment/Order";
 
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ProtectedAdminRoute from './admin page/ProtectedAdminRoute';
-import AdminDashboard from './admin page/AdminDashboard';
-import DashboardHome from './admin page/DashboardHome';
-import ManageProducts from './admin page/ManageProducts';
-import ManageUsers from './admin page/ManageUsers';
+
+import ProtectedAdminRoute from "./admin page/ProtectedAdminRoute";
+import AdminDashboard from "./admin page/AdminDashboard";
+import DashboardHome from "./admin page/DashboardHome";
+import ManageProducts from "./admin page/ManageProducts";
+import ManageUsers from "./admin page/ManageUsers";
 
 function App() {
   const location = useLocation();
   const user = JSON.parse(localStorage.getItem("user"));
-  const isAdmin = user?.role === "admin";
+  const isAdmin = user?.is_admin === true;
 
   const hideLayout =
     location.pathname === "/login" ||
@@ -39,27 +40,32 @@ function App() {
       {!hideLayout && <Navbar />}
 
       <Routes>
+        {/* ================= PUBLIC ================= */}
         <Route
           path="/"
-          element={isAdmin ? <Navigate to="/admin" /> : <Home />}
+          element={isAdmin ? <Navigate to="/admin/dashboard" /> : <Home />}
         />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
 
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        {/* ================= USER ================= */}
         <Route
           path="/products"
-          element={isAdmin ? <Navigate to="/admin" /> : <ProductList />}
+          element={isAdmin ? <Navigate to="/admin/dashboard" /> : <ProductList />}
         />
+
         <Route
           path="/products/:id"
-          element={isAdmin ? <Navigate to="/admin" /> : <ProductDetail />}
+          element={
+            isAdmin ? <Navigate to="/admin/dashboard" /> : <ProductDetail />
+          }
         />
 
         <Route
           path="/cart"
-          element={isAdmin ? <Navigate to="/admin" /> : <AddToCart />}
+          element={isAdmin ? <Navigate to="/admin/dashboard" /> : <AddToCart />}
         />
-        
 
         <Route
           path="/payment"
@@ -69,6 +75,7 @@ function App() {
             </Useprotecter>
           }
         />
+
         <Route
           path="/orders"
           element={
@@ -77,6 +84,7 @@ function App() {
             </Useprotecter>
           }
         />
+
         <Route
           path="/user"
           element={
@@ -86,7 +94,7 @@ function App() {
           }
         />
 
-        {/* <<<<< Admin Routes>>>>> */}
+        {/* ================= ADMIN ================= */}
         <Route element={<ProtectedAdminRoute />}>
           <Route path="/admin" element={<AdminDashboard />}>
             <Route index element={<DashboardHome />} />
@@ -98,7 +106,8 @@ function App() {
       </Routes>
 
       {!hideLayout && <Footer />}
-      <ToastContainer position="top-right" autoClose={5000} />
+
+      <ToastContainer position="top-right" autoClose={3000} />
     </>
   );
 }

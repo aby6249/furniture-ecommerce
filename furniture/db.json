@@ -100,6 +100,18 @@
       "role": "user",
       "isBlocked": false,
       "isDeleted": false
+    },
+    {
+      "id": "010",
+      "firstName": "vidhul",
+      "secondName": "k",
+      "mobile": "1234567896",
+      "email": "badhushacs88@gmail.com",
+      "password": "vidul321",
+      "confirmPassword": "vidul321",
+      "role": "user",
+      "isBlocked": false,
+      "isDeleted": false
     }
   ],
   "products": [
@@ -731,7 +743,7 @@
       "old_price": 4500,
       "category": "lamps & lighting",
       "description": "Modern white desk lamp with adjustable lighting.",
-      "status": "active"
+      "status": "activ  e"
     }
   ],
   "cart": [
@@ -770,6 +782,58 @@
       "productPrice": 450000,
       "image": "https://ii1.pepperfry.com/media/catalog/product/s/c/494x544/scarla-boucle-cornor-sofa-in-white-colour-scarla-boucle-cornor-sofa-in-white-colour-vgs76l.jpg",
       "quantity": 4
+    },
+    {
+      "id": "6500",
+      "userId": "002",
+      "productId": "3",
+      "productName": "Oxley Marble Coffee Table",
+      "productPrice": 250000,
+      "image": "https://ii1.pepperfry.com/media/catalog/product/o/x/494x544/oxley-coffee-table--arabescato-corchia-marble-oxley-coffee-table--arabescato-corchia-marble-nipx62.jpg",
+      "quantity": 3
+    },
+    {
+      "id": "39bf",
+      "userId": 2,
+      "productId": 3,
+      "productName": "Oxley Marble Coffee Table",
+      "productPrice": 250000,
+      "image": "https://ii1.pepperfry.com/media/catalog/product/o/x/494x544/oxley-coffee-table--arabescato-corchia-marble-oxley-coffee-table--arabescato-corchia-marble-nipx62.jpg",
+      "quantity": 1
+    },
+    {
+      "id": "6cf9",
+      "userId": 2,
+      "productId": 3,
+      "productName": "Oxley Marble Coffee Table",
+      "productPrice": 250000,
+      "image": "https://ii1.pepperfry.com/media/catalog/product/o/x/494x544/oxley-coffee-table--arabescato-corchia-marble-oxley-coffee-table--arabescato-corchia-marble-nipx62.jpg",
+      "quantity": 1
+    },
+    {
+      "id": "c051",
+      "userId": 2,
+      "productId": 1768365948287,
+      "productName": "Oxley Marble Coffee Table",
+      "productPrice": 250000,
+      "image": "https://ii1.pepperfry.com/media/catalog/product/o/x/494x544/oxley-coffee-table--arabescato-corchia-marble-oxley-coffee-table--arabescato-corchia-marble-nipx62.jpg",
+      "quantity": 1
+    },
+    {
+      "id": "5e05",
+      "userId": 2,
+      "productId": 1768365948287,
+      "productName": "Oxley Marble Coffee Table",
+      "productPrice": 250000,
+      "image": "https://ii1.pepperfry.com/media/catalog/product/o/x/494x544/oxley-coffee-table--arabescato-corchia-marble-oxley-coffee-table--arabescato-corchia-marble-nipx62.jpg",
+      "quantity": 1
+    },
+    {
+      "id": "9d0a",
+      "userId": 2,
+      "productId": 1768367223393,
+      "image": "https://ii1.pepperfry.com/media/catalog/product/o/x/494x544/oxley-coffee-table--arabescato-corchia-marble-oxley-coffee-table--arabescato-corchia-marble-nipx62.jpg",
+      "quantity": 1
     }
   ],
   "orders": [
@@ -1153,6 +1217,57 @@
       "total": 500100,
       "status": "Confirmed",
       "date": "8/11/2025, 7:38:10 PM"
+    },
+    {
+      "id": "a1bd",
+      "userId": "002",
+      "userName": "aby shaji",
+      "items": [
+        {
+          "id": "9cff",
+          "userId": "002",
+          "productId": "32",
+          "productName": "Berg Cluster Hanging Light",
+          "productPrice": 1449,
+          "image": "https://ii1.pepperfry.com/media/catalog/product/b/r/494x544/brown-metal-cluster-hanging-lights-by-foziq-brown-metal-cluster-hanging-lights-by-foziq-eqi2vq.jpg",
+          "quantity": 2
+        },
+        {
+          "id": "c38f",
+          "userId": "002",
+          "productId": "31",
+          "productName": "Impero Hanging Light",
+          "productPrice": 1490,
+          "image": "https://ii1.pepperfry.com/media/catalog/product/b/l/494x544/black-maze-metal-pendent-light-by-tu-casa-black-maze-metal-pendent-light-by-tu-casa-qtcmom.jpg",
+          "quantity": 1
+        }
+      ],
+      "address": "kochi",
+      "paymentMethod": "UPI",
+      "total": 4488,
+      "status": "Confirmed",
+      "date": "10/16/2025, 6:29:11 PM"
+    },
+    {
+      "id": "3353",
+      "userId": "002",
+      "userName": "aby shaji",
+      "items": [
+        {
+          "id": "5b25",
+          "userId": "002",
+          "productId": "1",
+          "productName": "Aston Fabric Corner Sofa",
+          "productPrice": 540000,
+          "image": "https://ii1.pepperfry.com/media/catalog/product/a/s/494x544/aston-fabric-corner-sofa-in-mid-brown-colour-aston-fabric-corner-sofa-in-mid-brown-colour-jor0dc.jpg",
+          "quantity": 2
+        }
+      ],
+      "address": "kochi",
+      "paymentMethod": "Cash on Delivery",
+      "total": 1080100,
+      "status": "Confirmed",
+      "date": "10/16/2025, 6:41:49 PM"
     }
   ]
 }

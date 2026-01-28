@@ -1,0 +1,150 @@
+.orders-container {
+  width: 90%;
+  margin: 30px auto;
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.orders-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 25px;
+  color: #222;
+}
+
+.order-card {
+  background: white;
+  padding: 15px;            
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.order-user,
+.order-address {
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.order-items {
+  margin: 10px 0;
+}
+
+.order-summary {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.order-summary:last-child {
+  border-bottom: none;
+}
+
+.order-summary img {
+  width: 100px;              
+  height: 100px;
+  object-fit: cover;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+
+.order-summary p {
+  font-size: 16px;
+  margin: 2px 0;
+  color: #333;
+}
+
+.order-total {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.continue-shopping-btn {
+  margin: 15px auto 0;   
+  background: #9d6a37;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  display: block;
+  text-align: center;
+  width: fit-content;
+}
+
+.continue-shopping-btn:hover {
+  background: #9d6a37;
+}
+
+/* <<<<<<<<<<<<<<<<Resposive>>>>>>>>> */
+@media (max-width: 992px) {
+  .order-summary {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 768px) {
+  .orders-title {
+    font-size: 24px;
+  }
+
+  .order-summary {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .order-summary img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+  }
+
+  .order-summary p {
+    font-size: 14px;
+  }
+
+  .order-user,
+  .order-address,
+  .order-total p,
+  .order-total h3 {
+    font-size: 14px;
+  }
+
+  .continue-shopping-btn {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .order-summary img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .order-summary p {
+    font-size: 13px;
+  }
+
+  .order-user,
+  .order-address,
+  .order-total p,
+  .order-total h3 {
+    font-size: 13px;
+  }
+
+  .continue-shopping-btn {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+}

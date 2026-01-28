@@ -5,21 +5,26 @@ const Logout = ({ className = "" }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-  
-    localStorage.removeItem("guestCart");
-    localStorage.removeItem("user");
-    localStorage.removeItem("isUserLoggedIn");
 
-    
+    localStorage.removeItem("user");
+    localStorage.removeItem("admin");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+
+ 
     window.dispatchEvent(new Event("userUpdated"));
     window.dispatchEvent(new Event("cartUpdated"));
 
-    
-    navigate("/", { replace: true });
+ 
+    navigate("/login", { replace: true });
   };
 
   return (
-    <button onClick={handleLogout} className={`logout-btn ${className}`}>
+    <button
+      type="button"
+      onClick={handleLogout}
+      className={`logout-btn ${className}`}
+    >
       Logout
     </button>
   );

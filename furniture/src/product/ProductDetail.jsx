@@ -12,11 +12,12 @@ const ProductDetail = () => {
   const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:3000/products/${id}`)
-      .then((res) => setProduct(res.data))
-      .catch((err) => console.error("Fetch error:", err));
-  }, [id]);
+  axios
+    .get(`http://127.0.0.1:8000/api/products/${id}/`)
+    .then((res) => setProduct(res.data))
+    .catch((err) => console.error("Fetch error:", err));
+}, [id]);
+
 
   if (!product) {
     return <p>Loading product details...</p>;

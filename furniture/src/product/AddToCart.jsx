@@ -4,16 +4,33 @@ import { CartContext } from "./CartContext";
 import "./AddToCart.css";
 
 const AddToCart = () => {
-  const { cart, removeFromCart, updateQuantity } = useContext(CartContext);
-  const user = JSON.parse(localStorage.getItem("user")); 
+  const { cart, removeFromCart, updateQuantity, loading } =
+    useContext(CartContext);
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log("user", user)
+
   const navigate = useNavigate();
 
+  
   const totalPrice = useMemo(() => {
     return cart.reduce((total, item) => {
       const price = item.productPrice || item.new_price;
       return total + price * item.quantity;
     }, 0);
   }, [cart]);
+
+  const handleDecrease = (item) => {
+    if (item.quantity <= 1) {
+      removeFromCart(item.id);
+    } else {
+      updateQuantity(item.id, item.quantity - 1);
+    }
+  };
+
+  const handleIncrease = (item) => {
+    updateQuantity(item.id, item.quantity + 1);
+  };
 
   return (
     <div className="cart-container">
@@ -24,42 +41,28 @@ const AddToCart = () => {
       ) : (
         <>
           {cart.map((item) => (
-            <div
-              key={user ? item.id : item.guestId || item.id}
-              className="cart-card"
-            >
+            <div key={item.id} className="cart-card">
               <img
                 src={item.image}
                 alt={item.productName || item.name}
                 className="cart-thumbnail"
               />
+
               <div className="cart-details">
                 <h3>{item.productName || item.name}</h3>
-                <p className="price">₹{item.productPrice || item.new_price}</p>
+                <p className="price">
+                  ₹{item.productPrice || item.new_price}
+                </p>
               </div>
 
               <div className="quantity-controls">
-                <button
-                  type="button"
-                  onClick={() =>
-                    updateQuantity(
-                      user ? item.id : item.guestId || item.id,
-                      item.quantity - 1
-                    )
-                  }
-                >
-                  -
+                <button disabled={loading} onClick={() => handleDecrease(item)}>
+                  −
                 </button>
+
                 <span>{item.quantity}</span>
-                <button
-                  type="button"
-                  onClick={() =>
-                    updateQuantity(
-                      user ? item.id : item.guestId || item.id,
-                      item.quantity + 1
-                    )
-                  }
-                >
+
+                <button disabled={loading} onClick={() => handleIncrease(item)}>
                   +
                 </button>
               </div>
@@ -69,11 +72,9 @@ const AddToCart = () => {
               </div>
 
               <button
-                type="button"
                 className="remove-btn"
-                onClick={() =>
-                  removeFromCart(user ? item.id : item.guestId || item.id)
-                }
+                disabled={loading}
+                onClick={() => removeFromCart(item.id)}
               >
                 Remove
               </button>
@@ -82,20 +83,23 @@ const AddToCart = () => {
 
           <div className="checkout-section">
             <h3>Total: ₹{totalPrice}</h3>
+
             <button
-              type="button"
               className="checkout-btn"
+              disabled={loading}
               onClick={() => {
-                if (!user) {
+                if (user?.access) {
+                  navigate("/payment");
+                } else {
                   localStorage.setItem("redirectAfterLogin", "/payment");
                   navigate("/login");
-                } else {
-                  navigate("/payment");
                 }
+
               }}
             >
               Proceed to Checkout
             </button>
+
           </div>
         </>
       )}

@@ -2,6 +2,20 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "./ManageProducts.css";
 
+
+
+
+const BASE_URL = "http://127.0.0.1:8000/api/admin";
+
+const getAuthHeaders = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user?.access || user?.token || "";
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+};
+
 const ManageProducts = () => {
   const [products, setProducts] = useState([]);
   const [filter, setFilter] = useState("all");
@@ -11,6 +25,21 @@ const ManageProducts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 10;
 
+
+
+
+  const [showAddProductForm, setShowAddProductForm] = useState(false);
+  const [newProduct, setNewProduct] = useState({
+    name: "",
+    description: "",
+    image: "",
+    category: "",
+    old_price: "",
+    new_price: "",
+    status: "active",
+  });
+
+ 
   const [editingProduct, setEditingProduct] = useState(null);
   const [editValues, setEditValues] = useState({
     name: "",
@@ -22,30 +51,21 @@ const ManageProducts = () => {
     status: "active",
   });
 
-  const [newProduct, setNewProduct] = useState({
-    name: "",
-    description: "",
-    image: "",
-    category: "",
-    old_price: "",
-    new_price: "",
-    status: "active",
-  });
 
 
-  const [showAddProductForm, setShowAddProductForm] = useState(false);
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("http://localhost:3000/products");
-      if (!res.ok) throw new Error("Failed to fetch products");
+      const res = await fetch(`${BASE_URL}/products/`, {
+        headers: getAuthHeaders(),
+      });
+      if (!res.ok) throw new Error();
+
       const data = await res.json();
       setProducts(data);
-
-      const uniqueCategories = [...new Set(data.map((p) => p.category))];
-      setCategories(uniqueCategories);
-    } catch (error) {
-      toast.error(`Failed to load products: ${error.message}`);
+      setCategories([...new Set(data.map((p) => p.category))]);
+    } catch {
+      toast.error("Failed to load products");
     }
   };
 
@@ -53,38 +73,30 @@ const ManageProducts = () => {
     fetchProducts();
   }, []);
 
-  const patchProduct = async (id, bodyData, successMsg) => {
-    try {
-      const res = await fetch(`http://localhost:3000/products/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(bodyData),
-      });
-      if (!res.ok) throw new Error("Failed to update product");
-      toast.success(successMsg);
-      fetchProducts();
-    } catch (error) {
-      toast.error(`Error: ${error.message}`);
-    }
-  };
+
+
+
 
   const addProduct = async () => {
     if (!newProduct.name || !newProduct.new_price || !newProduct.category) {
-      toast.error("Please fill required fields: Name, New Price, Category");
+      toast.error("Please fill required fields");
       return;
     }
+
     try {
-      const res = await fetch("http://localhost:3000/products", {
+      const res = await fetch(`${BASE_URL}/products/`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: getAuthHeaders(),
         body: JSON.stringify({
           ...newProduct,
           old_price: Number(newProduct.old_price) || 0,
           new_price: Number(newProduct.new_price),
         }),
       });
-      if (!res.ok) throw new Error("Failed to add product");
-      toast.success("Product added successfully");
+      if (!res.ok) throw new Error();
+
+      toast.success("Product added");
+      setShowAddProductForm(false);
       setNewProduct({
         name: "",
         description: "",
@@ -95,32 +107,42 @@ const ManageProducts = () => {
         status: "active",
       });
       fetchProducts();
-      setShowAddProductForm(false);
-    } catch (error) {
-      toast.error(`Error: ${error.message}`);
+    } catch {
+      toast.error("Failed to add product");
     }
   };
 
-  const softDeleteProduct = (id) => {
-    if (!window.confirm("Hide this product?")) return;
-    patchProduct(id, { status: "inactive" }, "Product hidden");
+
+
+  const patchProduct = async (id, body, msg) => {
+    try {
+      const res = await fetch(`${BASE_URL}/products/${id}/`, {
+        method: "PATCH",
+        headers: getAuthHeaders(),
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) throw new Error();
+
+      toast.success(msg);
+      fetchProducts();
+    } catch {
+      toast.error("Update failed");
+    }
   };
 
-  const reactivateProduct = (id) => {
-    if (!window.confirm("Reactivate this product?")) return;
-    patchProduct(id, { status: "active" }, "Product reactivated");
-  };
 
-  const handleEditClick = (prod) => {
-    setEditingProduct(prod.id);
+
+
+  const handleEditClick = (p) => {
+    setEditingProduct(p.id);
     setEditValues({
-      name: prod.name,
-      detail: prod.description || "",
-      image: prod.image || "",
-      category: prod.category,
-      old_price: prod.old_price || "",
-      new_price: prod.new_price,
-      status: prod.status || "active",
+      name: p.name,
+      description: p.description || "",
+      image: p.image || "",
+      category: p.category,
+      old_price: p.old_price || "",
+      new_price: p.new_price,
+      status: p.status,
     });
   };
 
@@ -129,24 +151,37 @@ const ManageProducts = () => {
   };
 
   const saveEdit = (id) => {
-    const bodyData = {
-      name: editValues.name,
-      detail: editValues.description,
-      image: editValues.image,
-      category: editValues.category,
-      old_price: Number(editValues.old_price) || 0,
-      new_price: Number(editValues.new_price),
-      status: editValues.status,
-    };
-    patchProduct(id, bodyData, "Product updated");
+    patchProduct(
+      id,
+      {
+        ...editValues,
+        old_price: Number(editValues.old_price) || 0,
+        new_price: Number(editValues.new_price),
+      },
+      "Product updated"
+    );
     setEditingProduct(null);
   };
 
-  const filtered = products.filter((prod) => {
-    const statusMatch = filter === "all" ? true : prod.status === filter;
-    const categoryMatch =
-      categoryFilter === "all" ? true : prod.category === categoryFilter;
-    return statusMatch && categoryMatch;
+
+
+
+  const softDeleteProduct = (id) => {
+    if (!window.confirm("Hide this product?")) return;
+    patchProduct(id, { status: "inactive" }, "Product hidden");
+  };
+
+  const reactivateProduct = (id) => {
+    patchProduct(id, { status: "active" }, "Product reactivated");
+  };
+
+
+
+
+  const filtered = products.filter((p) => {
+    const s = filter === "all" || p.status === filter;
+    const c = categoryFilter === "all" || p.category === categoryFilter;
+    return s && c;
   });
 
   const sorted = [...filtered].sort((a, b) => {
@@ -160,77 +195,7 @@ const ManageProducts = () => {
   const paginatedProducts = sorted.slice(start, start + productsPerPage);
   const totalPages = Math.ceil(sorted.length / productsPerPage);
 
-  if (showAddProductForm) {
-    return (
-      <div className="manage-products">
-        <h2>Add New Product</h2>
-        <div className="add-product-form">
-          <input
-            type="text"
-            placeholder="Product Name *"
-            value={newProduct.name}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, name: e.target.value })
-            }
-          />
-          <textarea
-            placeholder="Product description"
-            value={newProduct.description}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, description: e.target.value })
-            }
-          />
-          <input
-            type="text"
-            placeholder="Image URL"
-            value={newProduct.image}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, image: e.target.value })
-            }
-          />
-          <input
-            type="text"
-            placeholder="Category *"
-            value={newProduct.category}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, category: e.target.value })
-            }
-          />
-          <input
-            type="number"
-            placeholder="Old Price"
-            value={newProduct.old_price}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, old_price: e.target.value })
-            }
-          />
-          <input
-            type="number"
-            placeholder="New Price *"
-            value={newProduct.new_price}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, new_price: e.target.value })
-            }
-          />
-          <select
-            value={newProduct.status}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, status: e.target.value })
-            }
-          >
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-          </select>
-          <div style={{ marginTop: "1rem" }}>
-            <button onClick={addProduct} style={{ marginRight: "1rem" }}>
-              Add Product
-            </button>
-            <button onClick={() => setShowAddProductForm(false)}>Cancel</button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+
 
 
   return (
@@ -241,65 +206,115 @@ const ManageProducts = () => {
       <div
         className="add-product-card"
         onClick={() => setShowAddProductForm(true)}
-        style={{
-          border: "2px dashed #E39D2D",
-          borderRadius: "12px",
-          padding: "2rem",
-          marginBottom: "2rem",
-          cursor: "pointer",
-          textAlign: "center",
-          color: "#BD7D1C",
-          fontWeight: "600",
-          fontSize: "1.2rem",
-          userSelect: "none",
-        }}
       >
         + Add New Product
       </div>
 
 
+
+
       <div className="controls">
-        <div>
-          <label>Filter by status:</label>
-          <select
-            value={filter}
-            onChange={(e) => {
-              setFilter(e.target.value);
-              setCurrentPage(1);
-            }}
-          >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-          </select>
-        </div>
-        <div>
-          <label>View products by category:</label>
-          <select
-            value={categoryFilter}
-            onChange={(e) => {
-              setCategoryFilter(e.target.value);
-              setCurrentPage(1);
-            }}
-          >
-            <option value="all">All Categories</option>
-            {categories.map((cat, idx) => (
-              <option key={idx} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label>Sort by:</label>
-          <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-            <option value="">None</option>
-            <option value="name">Name</option>
-            <option value="priceLow">Price: Low to High</option>
-            <option value="priceHigh">Price: High to Low</option>
-          </select>
-        </div>
+        <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+          <option value="all">All</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+
+        <select
+          value={categoryFilter}
+          onChange={(e) => setCategoryFilter(e.target.value)}
+        >
+          <option value="all">All Categories</option>
+          {categories.map((c, i) => (
+            <option key={i} value={c}>
+              {c}
+            </option>
+          ))}
+        </select>
+
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+          <option value="">None</option>
+          <option value="name">Name</option>
+          <option value="priceLow">Price Low → High</option>
+          <option value="priceHigh">Price High → Low</option>
+        </select>
       </div>
+
+      {/* ADD PRODUCT MODAL */}
+      {showAddProductForm && (
+        <div
+          className="modal-overlay"
+          onClick={() => setShowAddProductForm(false)}
+        >
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <h2>Add New Product</h2>
+
+            <input
+              placeholder="Product Name *"
+              value={newProduct.name}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, name: e.target.value })
+              }
+            />
+
+            <textarea
+              placeholder="Product Description"
+              value={newProduct.description}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, description: e.target.value })
+              }
+            />
+
+            <input
+              placeholder="Image URL"
+              value={newProduct.image}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, image: e.target.value })
+              }
+            />
+
+            <select
+              value={newProduct.category}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, category: e.target.value })
+              }
+            >
+              <option value="">Select Category *</option>
+              <option value="living room">Living Room</option>
+              <option value="bedroom">Bedroom</option>
+              <option value="dining room">Dining Room</option>
+              <option value="lamps & lighting">Lamps & Lighting</option>
+            </select>
+
+            <input
+              type="number"
+              placeholder="Old Price"
+              value={newProduct.old_price}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, old_price: e.target.value })
+              }
+            />
+
+            <input
+              type="number"
+              placeholder="New Price *"
+              value={newProduct.new_price}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, new_price: e.target.value })
+              }
+            />
+
+            <div className="modal-actions">
+              <button onClick={addProduct}>Add Product</button>
+              <button onClick={() => setShowAddProductForm(false)}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+ 
 
 
       <div className="table-wrapper">
@@ -308,7 +323,6 @@ const ManageProducts = () => {
             <tr>
               <th>ID</th>
               <th>Name</th>
-              {/* <th>Detail</th> */}
               <th>Image</th>
               <th>Category</th>
               <th>Old Price</th>
@@ -317,66 +331,53 @@ const ManageProducts = () => {
               <th>Actions</th>
             </tr>
           </thead>
+
           <tbody>
-            {paginatedProducts.length > 0 ? (
-              paginatedProducts.map((prod) => (
-                <tr key={prod.id}>
-                  <td>{prod.id}</td>
+            {paginatedProducts.length ? (
+              paginatedProducts.map((p) => (
+                <tr key={p.id}>
+                  <td>{p.id}</td>
+
                   <td>
-                    {editingProduct === prod.id ? (
+                    {editingProduct === p.id ? (
                       <input
-                        type="text"
                         name="name"
                         value={editValues.name}
                         onChange={handleEditChange}
                       />
                     ) : (
-                      prod.name
+                      p.name
                     )}
                   </td>
-                  {/* <td>
-                    {editingProduct === prod.id ? (
-                      <textarea
-                        name="detail"
-                        value={editValues.detail}
-                        onChange={handleEditChange}
-                      />
-                    ) : (
-                      prod.detail
-                    )}
-                  </td> */}
+
                   <td>
-                    {editingProduct === prod.id ? (
+                    {editingProduct === p.id ? (
                       <input
-                        type="text"
                         name="image"
                         value={editValues.image}
                         onChange={handleEditChange}
                       />
-                    ) : prod.image ? (
-                      <img
-                        src={prod.image}
-                        alt={prod.name}
-                        style={{ width: "50px" }}
-                      />
+                    ) : p.image ? (
+                      <img src={p.image} alt="" width="50" />
                     ) : (
                       "-"
                     )}
                   </td>
+
                   <td>
-                    {editingProduct === prod.id ? (
+                    {editingProduct === p.id ? (
                       <input
-                        type="text"
                         name="category"
                         value={editValues.category}
                         onChange={handleEditChange}
                       />
                     ) : (
-                      prod.category
+                      p.category
                     )}
                   </td>
+
                   <td>
-                    {editingProduct === prod.id ? (
+                    {editingProduct === p.id ? (
                       <input
                         type="number"
                         name="old_price"
@@ -384,11 +385,12 @@ const ManageProducts = () => {
                         onChange={handleEditChange}
                       />
                     ) : (
-                      `₹${prod.old_price || 0}`
+                      `₹${p.old_price}`
                     )}
                   </td>
+
                   <td>
-                    {editingProduct === prod.id ? (
+                    {editingProduct === p.id ? (
                       <input
                         type="number"
                         name="new_price"
@@ -396,11 +398,12 @@ const ManageProducts = () => {
                         onChange={handleEditChange}
                       />
                     ) : (
-                      `₹${prod.new_price}`
+                      `₹${p.new_price}`
                     )}
                   </td>
+
                   <td>
-                    {editingProduct === prod.id ? (
+                    {editingProduct === p.id ? (
                       <select
                         name="status"
                         value={editValues.status}
@@ -409,18 +412,17 @@ const ManageProducts = () => {
                         <option value="active">Active</option>
                         <option value="inactive">Inactive</option>
                       </select>
-                    ) : prod.status === "inactive" ? (
-                      <span className="inactive">Inactive</span>
                     ) : (
-                      <span className="active">Active</span>
+                      <span className={p.status}>{p.status}</span>
                     )}
                   </td>
+
                   <td className="actions">
-                    {editingProduct === prod.id ? (
+                    {editingProduct === p.id ? (
                       <>
                         <button
                           className="save-btn"
-                          onClick={() => saveEdit(prod.id)}
+                          onClick={() => saveEdit(p.id)}
                         >
                           Save
                         </button>
@@ -435,21 +437,22 @@ const ManageProducts = () => {
                       <>
                         <button
                           className="edit-btn"
-                          onClick={() => handleEditClick(prod)}
+                          onClick={() => handleEditClick(p)}
                         >
                           Edit
                         </button>
-                        {prod.status === "active" ? (
+
+                        {p.status === "active" ? (
                           <button
                             className="delete-btn"
-                            onClick={() => softDeleteProduct(prod.id)}
+                            onClick={() => softDeleteProduct(p.id)}
                           >
                             Delete
                           </button>
                         ) : (
                           <button
                             className="reactivate-btn"
-                            onClick={() => reactivateProduct(prod.id)}
+                            onClick={() => reactivateProduct(p.id)}
                           >
                             Reactivate
                           </button>
@@ -461,8 +464,8 @@ const ManageProducts = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="9" className="no-products">
-                  No products found.
+                <td colSpan="8" className="no-products">
+                  No products found
                 </td>
               </tr>
             )}
@@ -472,13 +475,13 @@ const ManageProducts = () => {
 
 
       <div className="pagination">
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
           <button
-            key={page}
-            onClick={() => setCurrentPage(page)}
-            className={currentPage === page ? "active-page" : ""}
+            key={p}
+            onClick={() => setCurrentPage(p)}
+            className={currentPage === p ? "active-page" : ""}
           >
-            {page}
+            {p}
           </button>
         ))}
       </div>
